@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "airqualitymonitor-f6f6b",
+  "private_key_id": "b69fec05db361dda14b97741047fa0723d970bed",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDTsJXmaof7dElC\nBetlMcb/3fmvVv4rlv1N2XRM4/Soi/8xb84cQ01zYz1AQZ3St/O/DkipyAD3RYie\ngsWhoZHr9kwkKFpo1s7w/4tCiezSzmsF9bllUjlvDHJn0JeHkOcqxgSYUcmLCwiW\nezeNeHGr7nY9EOd7+9/rpfvvjt+HROJYfzI8qDD0svNl06wlftryj/Z6al0eCNuP\ntVxp8XhKWHk77mDhrc6VwD3jZxndfBQn1oifQ7D5nQVmvrKDTOuEcAcjdSwxjc7D\n1vCCbIlhWnZ3Sj4dDUuQAIcTSMhKp0jLGFSes352oxliy4hR6PhLIbsJcHhoUESg\nkqN5WfzRAgMBAAECggEAJg4hLH5rOq+Red6BjjwQF7BKchRz9dcba1LTvvzd3yzn\nr/X2+gq5Uix9dt805YwvM+H3+xma3tjvsfs1VxSqHF63Gmrssdsn8Zgm60vLOKxl\n/fjKHuZUr9tvd60+iF7qx7w4WD+fuTC/FvpIptSHrs5cECdJTfceLok0zMCE+5Z5\nQiXUShbKvI8grkPAHw01UowPHXYw8zNihNYjS3eGhezndeP0ieEr8g3jAWd62tcS\njOBL912mhkZwevoM9bi4IyhQFuiukrOa0gy0xkiuMmSQp2OEHRaOvsH7GhwlN2UW\nU1VOtq/Oo0dzTTaxIpcUNzg06zsMFCR858x3PsddpwKBgQD00XmYVm2OSjirBJFE\nOcPEpJAYhb+In/87BMKOWJMreXQbAfyC70ibLoP8PIG3iSwz6ug6/2PWdAqVQAVP\nsYGSdmx7mfxTLyBY5yoEoLHH1h9gi60WWgQm74csb/1O2pIhCRpU1BDU6M3Szb6E\noad4JbgLYNP6QgZ6/UyM2w4g9wKBgQDdW8HwQIht0DwW1E4Tro568qG2OU1w2Hdi\n5JD03Neq4b6Vd0QMKwFvm/86tAVJmEVfUjItV7L2wpwJaFhS85FxdYVcCFpA8RWA\nQYerv7a5yPfPyoRXPMeMAamxdwRC6z8soz4nKiJCOxkcoYBuYe3ZJD28fa+6INf7\nJuOXBTwmdwKBgCGMl0I2Ddti9nMRNCsKU3aeKpUBtyas7lgTJepF3x0lDrEoy4bR\n7bw+Wp31WL1jEeind12mY/MegdjEJjYumBgPHHyvtHFd0uv7+bkaoGJHSJN9cKHQ\ngiMnzflb+3WT5FScn7wiN5BFuvb5dPNOB9oiKR9+DG6OH784+QWQe1YvAoGAZl5c\n3iK59S7r2xLr2KZNNganSoJNkfZJn+5cKyFGi7xCSxUQ3x+0Vk0qR5ehKlvFGUQF\n+HoqRXvSdXdQAWyqwnG67sjeFFJpwxqLB55tfpW2JN5fPYjaL6FFPNDxo5DvclE8\nGRifJ0n1XwxBPMsFF/puopDth4JQ39EoR1sgahkCgYBK+rIWdEZadk2sIbmJutxL\nq5+3CYIqBmDrmraw0/9I+biVJtDRP0ZBdl1xgl5DWWUQwNzc5PJOSLNSk5ARzIHH\nbltbYlrqVihl+l86BCbY3zdM9pDO7SWktOlX3WEXHcYBd+/baeqnsyHNZHTqDBxs\nOHISWiN+bBrQhLakWz1JnQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@airqualitymonitor-f6f6b.iam.gserviceaccount.com",
+  "client_id": "103279327710787781944",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40airqualitymonitor-f6f6b.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
