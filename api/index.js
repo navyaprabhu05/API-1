@@ -181,5 +181,6 @@ app.get("/device/:id/15min", async (req, res) => {
 });
 
 // ✅ Export for Vercel serverless
+const serverless = require("serverless-http");
 module.exports = app;
 module.exports.handler = serverless(app);
