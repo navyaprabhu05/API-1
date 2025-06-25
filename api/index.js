@@ -7,18 +7,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔐 Use Firebase config from environment variable
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
+// ✅ Initialize Firebase Admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
 const db = admin.firestore();
 const COLLECTION = "air_quality_data";
 
+// ✅ Convert timestamp to IST
 function toIST(date) {
   return new Date(date.getTime() + 5.5 * 60 * 60 * 1000).toISOString();
 }
 
+// ✅ Format data with units
 function formatData(doc, formatIST = false) {
   const data = doc.data();
   let ts = data.timestamp.toDate();
@@ -30,6 +35,7 @@ function formatData(doc, formatIST = false) {
   return data;
 }
 
+// ✅ 1. Latest data from all devices
 app.get("/get-latest", async (req, res) => {
   const formatIST = req.query.format === "ist";
   try {
@@ -51,6 +57,7 @@ app.get("/get-latest", async (req, res) => {
   }
 });
 
+// ✅ 2. Latest data for one device
 app.get("/device/:id/latest", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -72,6 +79,7 @@ app.get("/device/:id/latest", async (req, res) => {
   }
 });
 
+// ✅ 3. 1-hour average if ≥ 45 points
 app.get("/device/:id/hourly", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -115,6 +123,7 @@ app.get("/device/:id/hourly", async (req, res) => {
   }
 });
 
+// ✅ 4. 15-minute interval averages (last hour)
 app.get("/device/:id/15min", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -129,7 +138,6 @@ app.get("/device/:id/15min", async (req, res) => {
       .get();
 
     const data = snapshot.docs.map(doc => doc.data());
-
     const buckets = [[], [], [], []];
 
     data.forEach(d => {
@@ -154,7 +162,7 @@ app.get("/device/:id/15min", async (req, res) => {
       });
 
       const count = bucket.length;
-      const avg = {
+      return {
         interval: `Average for ${45 - i * 15}-${60 - i * 15} min ago`,
         average_pm25: `${(sum.pm25 / count).toFixed(1)} µg/m³`,
         average_pm10: `${(sum.pm10 / count).toFixed(1)} µg/m³`,
@@ -164,8 +172,6 @@ app.get("/device/:id/15min", async (req, res) => {
         device_id: id,
         timestamp: formatIST ? toIST(now) : now.toISOString()
       };
-
-      return avg;
     }).filter(Boolean);
 
     res.json(results);
@@ -174,6 +180,6 @@ app.get("/device/:id/15min", async (req, res) => {
   }
 });
 
-// ✅ Export app for Vercel
+// ✅ Export for Vercel serverless
 module.exports = app;
 module.exports.handler = serverless(app);
