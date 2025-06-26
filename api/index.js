@@ -1,16 +1,15 @@
+require("dotenv").config();
 const express = require("express");
 const admin = require("firebase-admin");
 const cors = require("cors");
-const serverless = require("serverless-http");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔐 Use Firebase config from environment variable
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
-// ✅ Initialize Firebase Admin
+// Initialize Firebase Admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -18,24 +17,26 @@ admin.initializeApp({
 const db = admin.firestore();
 const COLLECTION = "air_quality_data";
 
-// ✅ Convert timestamp to IST
+// === Helper: Convert UTC to IST ===
 function toIST(date) {
   return new Date(date.getTime() + 5.5 * 60 * 60 * 1000).toISOString();
 }
 
-// ✅ Format data with units
+// === Helper: Format Firestore document ===
 function formatData(doc, formatIST = false) {
   const data = doc.data();
   let ts = data.timestamp.toDate();
   data.timestamp = formatIST ? toIST(ts) : ts.toISOString();
+
   data.pm25 = `${data.pm25} µg/m³`;
   data.pm10 = `${data.pm10} µg/m³`;
   data.temperature = `${data.temperature} °C`;
   data.humidity = `${data.humidity} %`;
+
   return data;
 }
 
-// ✅ 1. Latest data from all devices
+// === 1. GET /get-latest (All Devices) ===
 app.get("/get-latest", async (req, res) => {
   const formatIST = req.query.format === "ist";
   try {
@@ -57,7 +58,7 @@ app.get("/get-latest", async (req, res) => {
   }
 });
 
-// ✅ 2. Latest data for one device
+// === 2. GET /device/:id/latest ===
 app.get("/device/:id/latest", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -79,7 +80,7 @@ app.get("/device/:id/latest", async (req, res) => {
   }
 });
 
-// ✅ 3. 1-hour average if ≥ 45 points
+// === 3. GET /device/:id/hourly ===
 app.get("/device/:id/hourly", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -107,7 +108,6 @@ app.get("/device/:id/hourly", async (req, res) => {
     });
 
     const count = data.length;
-
     res.json({
       interval: "Average for last 60 minutes",
       average_pm25: `${(sum.pm25 / count).toFixed(1)} µg/m³`,
@@ -123,7 +123,7 @@ app.get("/device/:id/hourly", async (req, res) => {
   }
 });
 
-// ✅ 4. 15-minute interval averages (last hour)
+// === 4. GET /device/:id/15min ===
 app.get("/device/:id/15min", async (req, res) => {
   const formatIST = req.query.format === "ist";
   const id = req.params.id;
@@ -138,12 +138,11 @@ app.get("/device/:id/15min", async (req, res) => {
       .get();
 
     const data = snapshot.docs.map(doc => doc.data());
-    const buckets = [[], [], [], []];
 
+    const buckets = [[], [], [], []];
     data.forEach(d => {
       const ts = d.timestamp.toDate();
       const minsAgo = Math.floor((now - ts) / (1000 * 60));
-
       if (minsAgo < 15) buckets[3].push(d);
       else if (minsAgo < 30) buckets[2].push(d);
       else if (minsAgo < 45) buckets[1].push(d);
@@ -152,7 +151,6 @@ app.get("/device/:id/15min", async (req, res) => {
 
     const results = buckets.map((bucket, i) => {
       if (bucket.length === 0) return null;
-
       const sum = { pm25: 0, pm10: 0, temperature: 0, humidity: 0 };
       bucket.forEach(d => {
         sum.pm25 += d.pm25;
@@ -180,7 +178,7 @@ app.get("/device/:id/15min", async (req, res) => {
   }
 });
 
-// ✅ Export for Vercel serverless
+// === Export app for local and serverless ===
 const serverless = require("serverless-http");
 module.exports = app;
 module.exports.handler = serverless(app);
